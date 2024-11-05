@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Receitas</title>
+    <!-- Incluindo Bootstrap CSS para estilização -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            width: 250px;
+            margin: 10px;
+        }
+        .bg-warning {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="bg-warning" onload="preencheCatalogo()">
+
+    <!-- Título principal -->
+    <div class="container-fluid text-center">
+        <h1>Catálogo de Receitas</h1>
+    </div>
+
+    <!-- Container para o catálogo de receitas -->
+    <div id="pnlCatalogo" class="container-fluid d-flex flex-wrap justify-content-center"></div>
+
+    <!-- JavaScript para manipulação dos dados das receitas -->
+    <script>
+        // Vetor de receitas em formato JSON
+        const receitas = [
+            {
+                titulo: "Bolo de Chocolate",
+                imagem: "bolo_chocolate.png",
+                preparo: "Misture todos os ingredientes, leve ao forno por 30 minutos.",
+                ingredientes: ["2 xícaras de farinha", "1 xícara de açúcar", "1 xícara de chocolate em pó", "1/2 xícara de manteiga", "2 ovos", "1 colher de fermento"]
+            },
+            {
+                titulo: "Pão de Queijo",
+                imagem: "pao_queijo.png",
+                preparo: "Misture os ingredientes, modele as bolinhas e asse por 20 minutos.",
+                ingredientes: ["500g de polvilho doce", "300g de queijo ralado", "1 xícara de leite", "1/2 xícara de óleo", "2 ovos", "Sal a gosto"]
+            },
+            {
+                titulo: "Salada de Frutas",
+                imagem: "salada_frutas.png",
+                preparo: "Corte todas as frutas e misture em uma tigela.",
+                ingredientes: ["1 maçã", "1 banana", "1 laranja", "5 morangos", "1 colher de mel"]
+            }
+        ];
+
+        // Função para gerar a lista de ingredientes em HTML
+        function getListaIngredientes(receita) {
+            return `<ul>${receita.ingredientes.map(ingrediente => `<li>${ingrediente}</li>`).reduce((acc, item) => acc + item, '')}</ul>`;
+        }
+
+        // Função para gerar o card de cada receita
+        function getCard(receita) {
+            return `
+                <div class="card">
+                    <img src="${receita.imagem}" class="card-img-top" alt="${receita.titulo}">
+                    <div class="card-body">
+                        <h5 class="card-title">${receita.titulo}</h5>
+                        <div class="card-text">
+                            ${getListaIngredientes(receita)}
+                            <hr>
+                            ${receita.preparo}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função para preencher o catálogo de receitas na página
+        function preencheCatalogo() {
+            const pnlCatalogo = document.getElementById('pnlCatalogo');
+            pnlCatalogo.innerHTML = receitas.map(receita => getCard(receita)).reduce((html, card) => html + card, '');
+        }
+    </script>
+</body>
+</html>

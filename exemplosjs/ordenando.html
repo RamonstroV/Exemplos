@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenando Valores</title>
+    <!-- Incluindo Bootstrap CSS para estilização -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .btn {
+            margin-top: 10px;
+        }
+        #valores {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ordenando Valores</h1>
+        
+        <!-- Campo de entrada numérico -->
+        <div class="form-group">
+            <label for="valor">Valor</label>
+            <input type="number" id="valor" class="form-control" placeholder="Digite um valor">
+        </div>
+
+        <!-- Botão para adicionar o valor à lista -->
+        <button class="btn btn-primary" onclick="add()">Adicionar</button>
+
+        <!-- Campo de seleção para escolha do algoritmo de ordenação -->
+        <div class="form-group mt-3">
+            <label for="algoritmo">Escolha o algoritmo de ordenação:</label>
+            <select id="algoritmo" class="form-control">
+                <option value="bubble" selected>Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="quick">Quick Sort</option>
+            </select>
+        </div>
+
+        <!-- Botões para ordenar e misturar -->
+        <button class="btn btn-primary" onclick="ordenar()">Ordenar</button>
+        <button class="btn btn-primary" onclick="misturar()">Misturar</button>
+
+        <!-- Lista de valores -->
+        <ul id="valores" class="list-group mt-3"></ul>
+    </div>
+
+    <!-- Incluindo o arquivo ordenando.js -->
+    <script src="ordenando.js"></script>
+
+    <!-- Funções JavaScript para adicionar, ordenar e misturar -->
+    <script>
+        function add() {
+            const valorInput = document.getElementById('valor');
+            const valor = valorInput.value;
+            if (valor !== '') {
+                const listaValores = document.getElementById('valores');
+                const node = document.createElement('li');
+                node.classList.add('list-group-item'); // Classe Bootstrap para estilizar a lista
+                const textoNode = document.createTextNode(valor);
+                node.appendChild(textoNode);
+                listaValores.appendChild(node);
+                valorInput.value = '';
+            }
+        }
+
+        function ordenar() {
+            const listaValores = document.getElementById('valores');
+            const algoritmoSelecionado = document.getElementById('algoritmo').selectedIndex;
+            const valoresArray = Array.from(listaValores.children).map(item => eval(item.innerHTML));
+            if (algoritmoSelecionado === 0) {
+                bubble_sort(valoresArray);
+            } else if (algoritmoSelecionado === 1) {
+                selection_sort(valoresArray);
+            } else if (algoritmoSelecionado === 2) {
+                quick_sort(valoresArray);
+            }
+            listaValores.innerHTML = valoresArray.map(valor => `<li class="list-group-item">${valor}</li>`).reduce((html, item) => html + item, '');
+        }
+
+        function misturar() {
+            const listaValores = document.getElementById('valores');
+            const valoresArray = Array.from(listaValores.children).map(item => eval(item.innerHTML));
+            shuffle(valoresArray, valoresArray.length);
+            listaValores.innerHTML = valoresArray.map(valor => `<li class="list-group-item">${valor}</li>`).reduce((html, item) => html + item, '');
+        }
+    </script>
+</body>
+</html>
